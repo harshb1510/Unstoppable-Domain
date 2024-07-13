@@ -75,7 +75,7 @@ export default function BookingModal({
 
   const initPayment = (data) => {
     const options = {
-      key: "rzp_test_rrpFDSyVYUuEE4",
+      key: "rzp_test_XDJyRLoZSTmLWa",
       amount: data.amount,
       currency: data.currency,
       order_id: data.orderDetails.razorpayOrderId,
