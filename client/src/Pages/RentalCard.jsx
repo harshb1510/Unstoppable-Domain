@@ -29,9 +29,9 @@ export default function RentalCard() {
     <a href="#">
         <img class="rounded-t-lg w-full h-48" src="https://img.freepik.com/free-vector/car-rental-concept-illustration_114360-9267.jpg?size=626&ext=jpg&ga=GA1.1.1395880969.1709337600&semt=ais" alt="" />
     </a>
-    <div class="p-5 border shadow-lg">
+    <div class="p-5 border shadow-lg bg-white">
         <Link to=''>
-            <h5 class="mb-2 text-2xl  w-96 font-bold tracking-tight text-black dark:text-white">Rent a Vehicle</h5>
+            <h5 class="mb-2 text-2xl  w-96 font-bold tracking-tight text-black">Rent a Vehicle</h5>
         </Link>
         <h1 className='text-black mb-4'>"Explore a wide range of vehicles available for rent, with flexible options to suit your needs and budget."
 </h1>
