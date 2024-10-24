@@ -6,7 +6,7 @@ const Working = () => {
     <div className="container mx-auto px-4 py-8 shadow-xl">
       <div className="flex justify-between flex-col items-center mb-8 gap-4">
         <h1 className="text-3xl font-bold text-gray-800 leading-snug">
-          How Turbo Car Rental Works
+          How Park&Go Car Rental Works
         </h1>
         <p className="text-gray-500">
           The proper business solution for your developing business strategies

@@ -10,7 +10,7 @@ const ClaimNft = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await fetch("https://electrothon-nith.onrender.com/claimNft", {
+        const response = await fetch("http://localhost:8080/claimNft", {
           method: "GET",
           headers: {
             "Content-Type": "application/json",
@@ -30,7 +30,7 @@ const ClaimNft = () => {
 
     const handleSuccess = async () => { 
     try {
-      const response = await fetch("https://electrothon-nith.onrender.com/nft/claimSuccess", {
+      const response = await fetch("http://localhost:8080/nft/claimSuccess", {
         method: "PATCH",
         headers: {
           "Content-Type": "application/json",

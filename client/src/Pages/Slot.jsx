@@ -9,48 +9,70 @@ const Slot = () => {
   const [selectedSlot, setSelectedSlot] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [bookingData, setBookingData] = useState(null);
-  const [price, setPrice] = useState("100"); // Update this if you have an endpoint for the price
+  const [price, setPrice] = useState("100");
   const [freeSlot, setFreeSlot] = useState(0);
 
   useEffect(() => {
-    getSlot();
-    setupSSE();
-  }, [slots]);
+    fetchSlotsData();
+    const eventSource = setupSSE();
+    return () => {
+      eventSource.close();
+    };
+  }, []);
 
-  const getSlot = async () => {
+  const fetchSlotsData = async () => {
     try {
-      const response = await axios.get("https://parkingspotdetector.onrender.com/check_parking");
-      const data = response.data;
-      updateSlots(data);
+      const [realTimeResponse, dbResponse] = await Promise.all([
+        axios.get("http://127.0.0.1:8000/check_parking"),
+        axios.get("http://localhost:8080/parking/allSlot"),
+      ]);
+
+      const realTimeData = realTimeResponse.data;
+      const dbData = dbResponse.data;
+
+      const mergedSlots = mergeSlotData(realTimeData, dbData);
+      updateSlots(mergedSlots);
     } catch (error) {
       console.error("Error fetching slots:", error);
     }
   };
 
-  const updateSlots = (data) => {
-    const freeSlots = data.free_spaces;
-    const slotsStatus = data.space_status;
-    setFreeSlot(freeSlots);
+  const mergeSlotData = (realTimeData, dbData) => {
+    const slotsStatus = realTimeData.space_status;
+    const dbSlots = dbData.reduce((acc, slot) => {
+      acc[slot.slotNo] = slot;
+      return acc;
+    }, {});
 
-    // Convert the response to the format expected by the frontend
-    const formattedSlots = Object.keys(slotsStatus).map((key) => ({
-      slotNo: parseInt(key),
-      isFree: slotsStatus[key].status === "Empty",
-    }));
-    setSlots(formattedSlots);
+    return Object.keys(slotsStatus).map((key) => {
+      const slotNo = parseInt(key);
+      const isFree = slotsStatus[key].status === "Empty" && !dbSlots[slotNo]?.occupied;
+      return {
+        slotNo,
+        isFree,
+      };
+    });
+  };
+
+  const updateSlots = (mergedSlots) => {
+    const freeSlots = mergedSlots.filter(slot => slot.isFree).length;
+    setFreeSlot(freeSlots);
+    setSlots(mergedSlots);
   };
 
   const setupSSE = () => {
-    const eventSource = new EventSource("https://parkingspotdetector.onrender.com/sse_parking_status");
+    const eventSource = new EventSource("http://127.0.0.1:8000/sse_parking_status");
     eventSource.onmessage = (event) => {
       const parkingData = JSON.parse(event.data);
-      updateSlots(parkingData);
+      fetchSlotsData(); // Refresh data on SSE update
     };
 
     eventSource.onerror = (error) => {
       console.error("EventSource failed:", error);
       eventSource.close();
     };
+
+    return eventSource;
   };
 
   const handleSlotBook = (slotNo) => {

@@ -14,7 +14,7 @@ const MyCar = () => {
   }, []);
 
   const getCars = async () => {
-    const res = await fetch("https://electrothon-nith.onrender.com/listings/myCar", {
+    const res = await fetch("http://localhost:8080/listings/myCar", {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
@@ -30,7 +30,7 @@ const MyCar = () => {
     const accounts = await window.ethereum.request({
       method: "eth_requestAccounts",
     });
-    const res = await fetch("https://electrothon-nith.onrender.com/users/addWallet", {
+    const res = await fetch("http://localhost:8080/users/addWallet", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -47,7 +47,7 @@ const MyCar = () => {
   return (
     <>
     <Navbar/>
-      {user.wallet || account ? (
+      {user?.wallet || account ? (
         <div className="flex justify-between p-3 border">
           <Link to='/myBooking' className="text-left border-[2px] rounded p-2 bg-black text-white">My Bookings</Link>
           <h1 className="text-right content-center">Wallet Address : {user.wallet || account}</h1>
@@ -58,8 +58,8 @@ const MyCar = () => {
           </p>
           )}
     <div className="flex justify-evenly pt-4 items-center">
-      <h3 className="text-[20px] font-bold">Amount Earned via UPI<br /><span className="ml-[65px]">{user.amountEarned}</span>  Rs.</h3>
-      <h3 className="text-[20px] font-bold">Amount Earned via Crypto<br /><span className="ml-[65px]">{user.cryptoAmount}</span>  MATIC</h3>
+      <h3 className="text-[20px] font-bold">Amount Earned via UPI<br /><span className="ml-[65px]">{user?.amountEarned}</span>  Rs.</h3>
+      <h3 className="text-[20px] font-bold">Amount Earned via Crypto<br /><span className="ml-[65px]">{user?.cryptoAmount}</span>  MATIC</h3>
       </div>
       <h1 className="text-4xl text-center font-bold p-10">My Cars</h1>
 

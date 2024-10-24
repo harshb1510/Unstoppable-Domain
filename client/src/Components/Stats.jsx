@@ -19,16 +19,16 @@ const stats = [
 ];
 
 const Stats = () => (
-  <section className={`flex flex-row flex-wrap shadow-inner`}>
+  <section className="flex flex-row flex-wrap justify-center items-center bg-gray-100 py-10">
     {stats.map((stat) => (
       <div
         key={stat.id}
-        className={`flex-1 grid justify-start items-center  content-center flex-row p-6 text-center ml-[100px]`}
+        className="flex-1 max-w-xs m-4 p-6 bg-white shadow-lg rounded-lg transform transition-transform hover:scale-105 hover:shadow-xl"
       >
-        <h4 className="font-poppins font-semibold text-[40px] text-center   text-black">
+        <h4 className="font-poppins font-semibold text-[40px] text-center text-black mb-2">
           {stat.value}
         </h4>
-        <p className="font-poppins font-semibold text-[20px]   text-gradient uppercase ml-3">
+        <p className="font-poppins font-semibold text-[20px] text-center text-gray-700 uppercase">
           {stat.title}
         </p>
       </div>

@@ -3,7 +3,7 @@ import pickle
 
 
 
-width, height = 75, 32
+width, height = 100, 40
 try:
     with open('CarParkPos','rb') as f:
         posList = pickle.load(f)            
@@ -13,20 +13,22 @@ except:
 
 def mouseClick(events, x, y, flags, params):
     if events == cv2.EVENT_LBUTTONDOWN:
-        posList.append((x, y))
-        print(f"Position added: {x}, {y}")
-    if events == cv2.EVENT_RBUTTONDOWN:
         for i, pos in enumerate(posList):
-            x1,y1 = pos
-            if x1 < x < x1 + width and y1 < y < y1 +height:
+            x1, y1 = pos
+            if x1 < x < x1 + width and y1 < y < y1 + height:
                 posList.pop(i)
+                print(f"Position removed: {x1}, {y1}")
+                break
+        else:
+            posList.append((x, y))
+            print(f"Position added: {x}, {y}")
 
     with open("CarParkPos","wb") as f:
         pickle.dump(posList, f)            
 
 while True:
-    img = cv2.imread("carParkImg2.jpg")
-    # Create a copy of the image to draw rectangles on
+    img = cv2.imread("carParkImg.png")
+    
     img_copy = img.copy()
     
     for pos in posList:

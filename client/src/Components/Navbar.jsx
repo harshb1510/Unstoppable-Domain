@@ -17,7 +17,7 @@ export default function Navbar() {
 
   return (
     <div>
-      <nav className="bg-white text-black">
+      <nav className="bg-white text-black rounded-lg shadow-md m-4">
         <div className="flex flex-wrap justify-between items-center mx-auto max-w-screen-xl p-4 text-black">
           <Link
             to="/"
@@ -28,13 +28,13 @@ export default function Navbar() {
           <div className="flex items-center space-x-6 rtl:space-x-reverse">
             <Link
               to="/parking"
-              className="text-[20px]  cursor-pointer hover:underline font-bold"
+              className="text-[20px] cursor-pointer hover:underline font-bold"
             >
               Parking
             </Link>
             <Link
               to="/rental"
-              className="text-[20px]  cursor-pointer hover:underline font-bold"
+              className="text-[20px] cursor-pointer hover:underline font-bold"
             >
               Rental
             </Link>
@@ -42,17 +42,17 @@ export default function Navbar() {
             {isLoggedIn ? (
               <>
                 <Link to="/myCar">
-                  <span className="text-[20px]  cursor-pointer font-bold">
-                    Hii !! {""}
+                  <span className="text-[20px] cursor-pointer font-bold">
+                    Hii !!{" "}
                     <span className="text-blue-500">
                       {user && user.userName ? user.userName : ""}
                     </span>
-                  </span>{" "}
+                  </span>
                 </Link>
 
                 <button
                   onClick={handleLogout}
-                  className="text-[20px]  cursor-pointer hover:underline font-bold"
+                  className="text-[20px] cursor-pointer hover:underline font-bold"
                 >
                   Logout
                 </button>
@@ -61,13 +61,13 @@ export default function Navbar() {
               <>
                 <Link
                   to="/login"
-                  className="text-[20px]  cursor-pointer hover:underline font-bold"
+                  className="text-[20px] cursor-pointer hover:underline font-bold"
                 >
                   Login
                 </Link>
                 <Link
                   to="/signup"
-                  className="text-[20px]  cursor-pointer hover:underline font-bold"
+                  className="text-[20px] cursor-pointer hover:underline font-bold"
                 >
                   Signup
                 </Link>

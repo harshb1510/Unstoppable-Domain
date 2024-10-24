@@ -11,7 +11,7 @@ const MyBooking = () => {
       const user = JSON.parse(localStorage.getItem("user"));
       if (user) {
         const response = await fetch(
-          "https://electrothon-nith.onrender.com/listings/getMyBooking",
+          "http://localhost:8080/listings/getMyBooking",
           {
             method: "GET",
             headers: {

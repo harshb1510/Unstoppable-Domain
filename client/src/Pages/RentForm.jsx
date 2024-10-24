@@ -1,5 +1,5 @@
 import axios from "axios";
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import Navbar from "../Components/Navbar";
 import { toast } from "react-toastify";
@@ -14,18 +14,11 @@ export default function RentForm() {
   const [dailyRate, setDailyRate] = useState("");
   const [availableTill, setAvailableTill] = useState("");
   const [url1, setUrl1] = useState(null);
-    const [url2, setUrl2] = useState(null);
-    const navigate=useNavigate();
-    
-   
-
+  const [url2, setUrl2] = useState(null);
+  const navigate = useNavigate();
 
   const user = JSON.parse(localStorage.getItem("user"));
 
-
-    const handleTimeChange = time => {
-        setSelectedTime(time);
-      };
   const handleFirstUpload = async (e) => {
     const file = e.target.files[0];
     setImage1(file);
@@ -46,6 +39,7 @@ export default function RentForm() {
       console.log(error);
     }
   };
+
   const handleSecondUpload = async (e) => {
     const file = e.target.files[0];
     setImage2(file);
@@ -66,9 +60,10 @@ export default function RentForm() {
       console.log(error);
     }
   };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const res = await fetch("https://electrothon-nith.onrender.com/listings/listNewCar", {
+    const res = await fetch("http://localhost:8080/listings/listNewCar", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -95,27 +90,25 @@ export default function RentForm() {
     } else {
       console.log(data);
       toast.success("Car Listed Successfully");
-        navigate("/myCar");
-      
+      navigate("/myCar");
     }
   };
 
+  // Get today's date in the format 'YYYY-MM-DDTHH:MM'
+  const today = new Date().toISOString().slice(0, 16);
+
   return (
-
-    <div className="">
-      <Navbar/>
-    <div className="mt-8 mb-4 " >
-      <div className="w-full max-w-sm mx-auto overflow-hidden bg-white rounded-lg shadow-md dark:bg-gray-800">
-        <div className="px-6 py-8">
-
-          <p className="mt-1  text-2xl text-center font-bold text-cyan-500 dark:text-gray-400">
+    <div className="min-h-screen bg-white">
+      <Navbar />
+      <div className="flex justify-center items-center py-12">
+        <div className="w-full max-w-lg bg-white rounded-lg shadow-lg p-8 transform transition duration-500 hover:scale-105">
+          <h2 className="text-3xl font-bold text-center text-green-500 mb-6">
             Rental Entry
-          </p>
-
+          </h2>
           <form onSubmit={handleSubmit}>
-            <div className="w-full mt-4">
+            <div className="mb-4">
               <input
-                className="block w-full px-4 py-2 mt-2 text-black placeholder-gray-500 bg-white border rounded-lg dark:bg-gray-800 dark:border-gray-600 dark:placeholder-gray-400 focus:border-blue-400 dark:focus:border-blue-300 focus:ring-opacity-40 focus:outline-none focus:ring focus:ring-blue-300"
+                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500"
                 type="text"
                 placeholder="Car Name"
                 aria-label="Car Name"
@@ -123,34 +116,27 @@ export default function RentForm() {
                 onChange={(e) => setCarName(e.target.value)}
               />
             </div>
-
-            <div className="w-full mt-4">
+            <div className="mb-4">
               <input
-                className="block w-full px-4 py-2 mt-2 text-black bg-white border rounded-lg dark:bg-gray-800 dark:border-gray-600 dark:placeholder-gray-400 focus:border-blue-400 dark:focus:border-blue-300 focus:ring-opacity-40 focus:outline-none focus:ring focus:ring-blue-300"
-                placeholder="Front image of car"
+                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500"
                 type="file"
                 aria-label="Upload Image"
-                multiple
                 required
                 onChange={handleFirstUpload}
               />
             </div>
-
-            <div className="w-full mt-4">
+            <div className="mb-4">
               <input
-                className="block w-full px-4 py-2 mt-2 text-black   bg-white border rounded-lg dark:bg-gray-800 dark:border-gray-600 dark:placeholder-gray-400 focus:border-blue-400 dark:focus:border-blue-300 focus:ring-opacity-40 focus:outline-none focus:ring focus:ring-blue-300"
-                placeholder="Front image of car"
+                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500"
                 type="file"
                 aria-label="Upload Image"
-                multiple
                 required
                 onChange={handleSecondUpload}
               />
             </div>
-
-            <div className="w-full mt-4">
+            <div className="mb-4">
               <input
-                className="block w-full px-4 py-2 mt-2 text-black placeholder-gray-500 bg-white border rounded-lg dark:bg-gray-800 dark:border-gray-600 dark:placeholder-gray-400 focus:border-blue-400 dark:focus:border-blue-300 focus:ring-opacity-40 focus:outline-none focus:ring focus:ring-blue-300"
+                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500"
                 type="text"
                 placeholder="Location"
                 aria-label="Location"
@@ -158,9 +144,9 @@ export default function RentForm() {
                 onChange={(e) => setLocation(e.target.value)}
               />
             </div>
-            <div className="w-full mt-4">
+            <div className="mb-4">
               <input
-                className="block w-full px-4 py-2 mt-2 text-black placeholder-gray-500 bg-white border rounded-lg dark:bg-gray-800 dark:border-gray-600 dark:placeholder-gray-400 focus:border-blue-400 dark:focus:border-blue-300 focus:ring-opacity-40 focus:outline-none focus:ring focus:ring-blue-300"
+                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500"
                 type="number"
                 placeholder="Total KMS"
                 aria-label="Total KMS"
@@ -168,9 +154,9 @@ export default function RentForm() {
                 onChange={(e) => setKms(e.target.value)}
               />
             </div>
-            <div className="w-full mt-4">
+            <div className="mb-4">
               <input
-                className="block w-full px-4 py-2 mt-2 text-black placeholder-gray-500 bg-white border rounded-lg dark:bg-gray-800 dark:border-gray-600 dark:placeholder-gray-400 focus:border-blue-400 dark:focus:border-blue-300 focus:ring-opacity-40 focus:outline-none focus:ring focus:ring-blue-300"
+                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500"
                 type="number"
                 placeholder="Hourly Rate"
                 aria-label="Price Per Hour"
@@ -178,10 +164,9 @@ export default function RentForm() {
                 onChange={(e) => setHourlyRate(e.target.value)}
               />
             </div>
-
-            <div className="w-full mt-4">
+            <div className="mb-4">
               <input
-                className="block w-full px-4 py-2 mt-2 text-black placeholder-gray-500 bg-white border rounded-lg dark:bg-gray-800 dark:border-gray-600 dark:placeholder-gray-400 focus:border-blue-400 dark:focus:border-blue-300 focus:ring-opacity-40 focus:outline-none focus:ring focus:ring-blue-300"
+                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500"
                 type="number"
                 placeholder="Daily Rate"
                 aria-label="Price Per Day"
@@ -189,32 +174,28 @@ export default function RentForm() {
                 onChange={(e) => setDailyRate(e.target.value)}
               />
             </div>
-            <div className="w-full mt-4">
+            <div className="mb-4">
               <input
-                className="block w-full px-4 py-2 mt-2 text-black placeholder-gray-500 bg-white border rounded-lg dark:bg-gray-800 dark:border-gray-600 dark:placeholder-gray-400 focus:border-blue-400 dark:focus:border-blue-300 focus:ring-opacity-40 focus:outline-none focus:ring focus:ring-blue-300"
+                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500"
                 type="datetime-local"
                 placeholder="Available Till"
                 aria-label="Available Till"
                 required
+                min={today} // Set the minimum date to today
                 onChange={(e) => setAvailableTill(e.target.value)}
               />
             </div>
-           
-
-          
-            <div className="flex items-center justify-center mt-4">
+            <div className="flex justify-center">
               <button
                 type="submit"
-                className="px-6 py-2 text-sm font-medium tracking-wide text-white capitalize transition-colors duration-300 transform bg-cyan-500 rounded-lg hover:bg-cyan-400 focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-50"
+                className="px-6 py-2 text-white bg-green-500 rounded-lg hover:bg-green-400 focus:outline-none focus:ring-2 focus:ring-green-500"
               >
-               Submit 
+                Submit
               </button>
             </div>
           </form>
-          
         </div>
       </div>
-    </div>
     </div>
   );
 }

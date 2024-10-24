@@ -1,6 +1,6 @@
 import * as React from "react";
 import PropTypes from "prop-types";
-import { useNavigate } from "react-router-dom"; // Import useHistory hook
+import { useNavigate } from "react-router-dom";
 import { styled, css } from "@mui/system";
 import { Modal as BaseModal } from "@mui/base/Modal";
 import { Button } from "@mui/base/Button";
@@ -27,6 +27,7 @@ export default function BookingModal({
   const [hours, setHours] = React.useState(0);
   const [rentPrice, setRentPrice] = React.useState(0);
   const [timeLeft, setTimeLeft] = React.useState(0);
+  const [acceptedTerms, setAcceptedTerms] = React.useState(false);
 
   const history = useNavigate();
 
@@ -48,9 +49,8 @@ export default function BookingModal({
   }, []);
 
   const handlePayment = async () => {
-
     const cryptoAmount = rentPrice * 0.011;
-    const user = await fetch("https://electrothon-nith.onrender.com/users/getUser", {
+    const user = await fetch("http://localhost:8080/users/getUser", {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
@@ -59,10 +59,10 @@ export default function BookingModal({
     });
     const data = await user.json();
     const cryptoAddress = data.user.wallet;
-    await makeCryptoPayment(cryptoAddress, totalPayable*0.011);
+    await makeCryptoPayment(cryptoAddress, totalPayable * 0.011);
 
     const saveWallet = await axios.post(
-      "https://electrothon-nith.onrender.com/listings/bookings/saveWallet",
+      "http://localhost:8080/listings/bookings/saveWallet",
       {
         id,
         carOwnerId,
@@ -81,7 +81,7 @@ export default function BookingModal({
       order_id: data.orderDetails.razorpayOrderId,
       handler: async (response) => {
         try {
-          const verifyUrl = `https://electrothon-nith.onrender.com/listings/verify`;
+          const verifyUrl = `http://localhost:8080/listings/verify`;
 
           const verifyData = {
             razorpay_order_id: response.razorpay_order_id,
@@ -91,7 +91,7 @@ export default function BookingModal({
           await axios.post(verifyUrl, verifyData);
           console.log(id, carOwnerId);
           const save = await axios.post(
-            "https://electrothon-nith.onrender.com/listings/bookings/saveBooking",
+            "http://localhost:8080/listings/bookings/saveBooking",
             {
               id,
               carOwnerId,
@@ -122,7 +122,7 @@ export default function BookingModal({
       const finalDate = new Date(final);
       const time = final.getTime();
       console.log(time);
-      setTimeLeft(time)
+      setTimeLeft(time);
       const differenceInMs = finalDate - initialDate;
       const differenceInHours = differenceInMs / (1000 * 60 * 60);
       return parseInt(differenceInHours);
@@ -145,10 +145,10 @@ export default function BookingModal({
     try {
       console.log(id, carOwnerId);
       const response = await axios.post(
-        "https://electrothon-nith.onrender.com/listings/bookings/addBooking",
+        "http://localhost:8080/listings/bookings/addBooking",
         {
           hours,
-          rentPrice:totalPayable,
+          rentPrice: totalPayable,
         }
       );
       initPayment(response.data, id, carOwnerId);
@@ -164,15 +164,10 @@ export default function BookingModal({
     setRentPrice(rentPrice);
   });
 
-  const totalPayable = rentPrice+5000;
+  const totalPayable = rentPrice + 5000;
   return (
     <div>
-      <button
-        className="border p-1 text-black bg-white rounded ml-[90px]"
-        onClick={handleOpen}
-      >
-        Book Now!
-      </button>
+      <TriggerButton onClick={handleOpen}>Book Now!</TriggerButton>
       <Modal
         aria-labelledby="spring-modal-title"
         aria-describedby="spring-modal-description"
@@ -213,7 +208,7 @@ export default function BookingModal({
                       const selectedDate = dayjs(e.target.value).toDate();
                       if (selectedDate > initial) {
                         setFinal(selectedDate);
-                        }
+                      }
                     }}
                   />
                 </div>
@@ -224,11 +219,42 @@ export default function BookingModal({
               Rent Price: {rentPrice} Rs. ({rentPrice * 0.011} MATIC)
             </p>
             <p>
-              Security Amount: Rs. 5000 (Refundable)<br/>
-              Total Payable Amount: Rs.{totalPayable} ({Math.floor(totalPayable * 0.011)} MATIC)
+              Security Amount: Rs. 5000 (Refundable)
+              <br />
+              Total Payable Amount: Rs.{totalPayable} (
+              {Math.floor(totalPayable * 0.011)} MATIC)
             </p>
-            <button onClick={handleProceed}>Pay via Razorpay</button>
-            <button onClick={handlePayment}>Pay via Crypto</button>
+            <div className="terms">
+              <h3>Terms and Conditions</h3>
+              <p>
+                By proceeding with this booking, you agree to the following
+                terms and conditions: In case of any damage or illegal activity
+                involving the rented vehicle, the renter will be held
+                responsible. The company is not liable for any such incidents.
+              </p>
+              <label>
+                <input
+                  type="checkbox"
+                  checked={acceptedTerms}
+                  onChange={(e) => setAcceptedTerms(e.target.checked)}
+                />
+                I accept the terms and conditions
+              </label>
+            </div>
+            <ButtonGroup>
+              <StyledButton
+                onClick={handleProceed}
+                disabled={!acceptedTerms}
+              >
+                Pay via Razorpay
+              </StyledButton>
+              <StyledButton
+                onClick={handlePayment}
+                disabled={!acceptedTerms}
+              >
+                Pay via Crypto
+              </StyledButton>
+            </ButtonGroup>
           </ModalContent>
         </Fade>
       </Modal>
@@ -320,13 +346,14 @@ const style = {
   top: "50%",
   left: "50%",
   transform: "translate(-50%, -50%)",
-  width: 400,
+  width: 500,
   bgcolor: "white",
   border: "2px solid white",
-  borderRadius: 1,
+  borderRadius: 8,
   color: "black",
   fontFamily: "IBM Plex Sans",
   fontWeight: 500,
+  padding: "20px",
 };
 
 const ModalContent = styled("div")(
@@ -337,14 +364,14 @@ const ModalContent = styled("div")(
     position: relative;
     display: flex;
     flex-direction: column;
-    gap: 8px;
+    gap: 16px;
     overflow: hidden;
     background-color: ${theme.palette.mode === "dark" ? grey[900] : "#fff"};
     border-radius: 8px;
     border: 1px solid ${theme.palette.mode === "dark" ? grey[700] : grey[200]};
     box-shadow: 0 4px 12px
       ${theme.palette.mode === "dark" ? "rgb(0 0 0 / 0.5)" : "rgb(0 0 0 / 0.2)"};
-    padding: 48px;
+    padding: 32px;
     color: ${theme.palette.mode === "dark" ? grey[50] : grey[900]};
 
     & .modal-title {
@@ -395,3 +422,36 @@ const TriggerButton = styled(Button)(
     }
   `
 );
+
+const ButtonGroup = styled("div")`
+  display: flex;
+  justify-content: space-between;
+  margin-top: 20px;
+`;
+
+const StyledButton = styled(Button)`
+  font-family: "IBM Plex Sans", sans-serif;
+  font-weight: 600;
+  font-size: 1rem;
+  padding: 10px 20px;
+  border-radius: 8px;
+  transition: all 150ms ease;
+  cursor: pointer;
+  background: ${blue[500]};
+  border: none;
+  color: white;
+  box-shadow: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+
+  &:hover {
+    background: ${blue[600]};
+  }
+
+  &:active {
+    background: ${blue[700]};
+  }
+
+  &:disabled {
+    background: ${grey[400]};
+    cursor: not-allowed;
+  }
+`;

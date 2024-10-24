@@ -19,8 +19,7 @@ import NFTMint from "./Pages/nftMint.jsx";
 import ClaimNft from "./Pages/claimNft.jsx";
 import { ToastContainer } from "react-toastify";
 import 'react-toastify/dist/ReactToastify.css';
-
-
+import VideoFeed from './Components/VideoFeed';
 
 const App = () => (
   <div className="App">
@@ -42,6 +41,7 @@ const App = () => (
         <Route path="/myBooking" element={<MyBooking/>} />
         <Route path="/nftMint" element={<NFTMint/>} />
         <Route path="/claimNft" element={<ClaimNft/>} />
+        <Route path="/video_feed" element={<VideoFeed />} />
       </Routes>
       <ToastContainer/>
     </Router>

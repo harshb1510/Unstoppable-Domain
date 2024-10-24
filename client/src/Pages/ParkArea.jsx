@@ -10,8 +10,8 @@ const MAPBOX_TOKEN = 'pk.eyJ1IjoidGFuaXNoa2gxNiIsImEiOiJjbHRkOWY4Y24wMDh2Mm9xd2x
 export default function ParkArea() {
   const mapRef = useRef();
   const [viewPort, setViewPort] = useState({
-    latitude: 31.5048, // Himachal Pradesh latitude
-    longitude: 77.1734, // Himachal Pradesh longitude
+    latitude: 31.28, // Himachal Pradesh latitude
+    longitude: 76.11, // Himachal Pradesh longitude
     zoom: 7,
   });
   const navigate=useNavigate();
@@ -59,7 +59,7 @@ export default function ParkArea() {
       latitude: place.center[1],
       longitude: place.center[0],
     });
-    setIsDropdownOpen(false); // Close the dropdown when a place is selected
+    setIsDropdownOpen(false);
   };
   const handleClick=()=>{
     toast.success('Parking Area Selected')
@@ -68,74 +68,63 @@ navigate('/slot')
   
 
   return (
-    <div>
-        <Navbar/>
-        <h1 className='text-3xl mb-8 text-center leading-snug  font-bold text-black mt-2'>Select the Area where you want to park</h1>
-    
-    <div style={{ width: '800px', height: '400px', marginLeft: '200px' }}>
-      <input
-        type="text"
-        placeholder="Search location..."
-        className='w-5/6'
-        value={searchQuery}
-        onChange={(e) => setSearchQuery(e.target.value)}
-        onFocus={() => setIsDropdownOpen(true)}
-      />
-      <button className='bg-cyan-500 w-20 p-2  rounded-md text-white' onClick={handleSearch}>Search</button>
-      {isDropdownOpen && (
-        <ul>
-          {searchResults.map((result) => (
-            <div className='bg-white text-black cursor-pointer'>
-            <li key={result.id} onClick={() => handleSelectPlace(result)}>{result.place_name}</li>
-            </div>
-          ))}
-        </ul>
-      )}
-    <ReactMapGl
-  {...viewPort}
-  ref={mapRef}
-  mapboxAccessToken={MAPBOX_TOKEN}
-  width="100%"
-  height="100%"
-  transitionDuration="200"
-  mapStyle="mapbox://styles/tanishkh16/cltdbi8st002501qzgf8cd4za"
-
->
-  {selectedLocation && (
-    <>
-    <Marker onClick={handleClick} latitude={selectedLocation.latitude} longitude={selectedLocation.longitude+0.001} >
-      <svg
-        xmlns="http://www.w3.org/2000/svg"
-        viewBox="0 0 24 24"
-        fill="red"
-        width="24px"
-        height="24px"
-      >
-        <path d="M12 0C7.245 0 3 4.245 3 9c0 5.25 9 15 9 15s9-9.75 9-15c0-4.755-4.245-9-9-9zm0 13.5c-1.425 0-2.565-1.14-2.565-2.565S10.575 8.37 12 8.37s2.565 1.14 2.565 2.565S13.425 13.5 12 13.5z"/>
-      </svg>
-      <div style={{ color: 'red', fontWeight: 'bold' }}>Parking</div>
-
-    </Marker>
-    <Marker onClick={handleClick} latitude={selectedLocation.latitude-0.004} longitude={selectedLocation.longitude-0.003} >
-      <svg
-        xmlns="http://www.w3.org/2000/svg"
-        viewBox="0 0 24 24"
-        fill="red"
-        width="24px"
-        height="24px"
-      >
-        <path d="M12 0C7.245 0 3 4.245 3 9c0 5.25 9 15 9 15s9-9.75 9-15c0-4.755-4.245-9-9-9zm0 13.5c-1.425 0-2.565-1.14-2.565-2.565S10.575 8.37 12 8.37s2.565 1.14 2.565 2.565S13.425 13.5 12 13.5z"/>
-      </svg>
-      <div style={{ color: 'red', fontWeight: 'bold' }}>Parking</div>
-
-    </Marker>
-    
-    </>
-    
-    
-  )}
-</ReactMapGl>
-    </div>
+    <div className="min-h-screen bg-gray-100">
+      <Navbar/>
+      <div className="container mx-auto py-8">
+        <h1 className="text-3xl mb-8 text-center font-bold text-black">Select the Area where you want to park</h1>
+        <div className="flex justify-center mb-4">
+          <input
+            type="text"
+            placeholder="Search location..."
+            className="w-3/4 p-2 border border-gray-300 rounded-l-md"
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+            onFocus={() => setIsDropdownOpen(true)}
+          />
+          <button className="bg-cyan-500 p-2 rounded-r-md text-white" onClick={handleSearch}>Search</button>
+        </div>
+        {isDropdownOpen && (
+          <ul className="bg-white border border-gray-300 rounded-md shadow-md max-h-60 overflow-y-auto">
+            {searchResults.map((result) => (
+              <li
+                key={result.id}
+                onClick={() => handleSelectPlace(result)}
+                className="p-2 hover:bg-gray-200 cursor-pointer"
+              >
+                {result.place_name}
+              </li>
+            ))}
+          </ul>
+        )}
+        <div className="mt-4" style={{ width: '100%', height: '500px' }}>
+          <ReactMapGl
+            {...viewPort}
+            ref={mapRef}
+            mapboxAccessToken={MAPBOX_TOKEN}
+            width="100%"
+            height="100%"
+            transitionDuration="200"
+            mapStyle="mapbox://styles/tanishkh16/cltdbi8st002501qzgf8cd4za"
+          >
+            {selectedLocation && (
+              <>
+                <Marker onClick={handleClick} latitude={selectedLocation.latitude} longitude={selectedLocation.longitude + 0.001}>
+                  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="red" width="24px" height="24px">
+                    <path d="M12 0C7.245 0 3 4.245 3 9c0 5.25 9 15 9 15s9-9.75 9-15c0-4.755-4.245-9-9-9zm0 13.5c-1.425 0-2.565-1.14-2.565-2.565S10.575 8.37 12 8.37s2.565 1.14 2.565 2.565S13.425 13.5 12 13.5z"/>
+                  </svg>
+                  <div style={{ color: 'red', fontWeight: 'bold' }}>Parking</div>
+                </Marker>
+                <Marker onClick={handleClick} latitude={selectedLocation.latitude - 0.004} longitude={selectedLocation.longitude - 0.003}>
+                  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="red" width="24px" height="24px">
+                    <path d="M12 0C7.245 0 3 4.245 3 9c0 5.25 9 15 9 15s9-9.75 9-15c0-4.755-4.245-9-9-9zm0 13.5c-1.425 0-2.565-1.14-2.565-2.565S10.575 8.37 12 8.37s2.565 1.14 2.565 2.565S13.425 13.5 12 13.5z"/>
+                  </svg>
+                  <div style={{ color: 'red', fontWeight: 'bold' }}>Parking</div>
+                </Marker>
+              </>
+            )}
+          </ReactMapGl>
+        </div>
+      </div>
     </div>
     
   );

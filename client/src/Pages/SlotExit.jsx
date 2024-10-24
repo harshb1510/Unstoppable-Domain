@@ -1,22 +1,20 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Scanner } from "@yudiel/react-qr-scanner";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
-import { Button, Modal } from "@mui/material";
+import { Button, Modal, Box, Typography } from "@mui/material";
 import makeCryptoPayment from "../utils/constants";
 
 const SlotExit = () => {
   const history = useNavigate();
-
-  const [payableAmount, setPayableAmount] = React.useState(0);
+  const [payableAmount, setPayableAmount] = useState(0);
   const [showModal, setShowModal] = useState(false);
 
-  React.useEffect(() => {
+  useEffect(() => {
     const loadRazorpayScript = async () => {
       const script = document.createElement("script");
       script.src = "https://checkout.razorpay.com/v1/checkout.js";
       script.async = true;
-      script.onload = () => {};
       document.body.appendChild(script);
     };
 
@@ -25,14 +23,13 @@ const SlotExit = () => {
 
   const initPayment = (data) => {
     const options = {
-      key: "rzp_test_rrpFDSyVYUuEE4",
+      key: "rzp_test_XDJyRLoZSTmLWa",
       amount: data.amount,
       currency: data.currency,
       order_id: data.orderDetails.razorpayOrderId,
       handler: async (response) => {
         try {
-          const verifyUrl = `https://electrothon-nith.onrender.com/listings/verify`;
-
+          const verifyUrl = `http://localhost:8080/listings/verify`;
           const verifyData = {
             razorpay_order_id: response.razorpay_order_id,
             razorpay_payment_id: response.razorpay_payment_id,
@@ -55,14 +52,12 @@ const SlotExit = () => {
   const handleProceed = async (data) => {
     try {
       const response = await axios.post(
-        "https://electrothon-nith.onrender.com/listings/bookings/addBooking",
+        "http://localhost:8080/listings/bookings/addBooking",
         {
           rentPrice: data,
         }
       );
-      console.log(response.data);
       initPayment(response.data);
-      
     } catch (error) {
       console.log(error);
     }
@@ -70,8 +65,7 @@ const SlotExit = () => {
 
   const qrData = async (text) => {
     const slotBooking = JSON.parse(text);
-    console.log(slotBooking.slotId);
-    const slotExit = await fetch("https://electrothon-nith.onrender.com/parking/slotExit", {
+    const slotExit = await fetch("http://localhost:8080/parking/slotExit", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -81,12 +75,15 @@ const SlotExit = () => {
       }),
     });
     const data = await slotExit.json();
-    console.log(data.payableAmount);
+    if (!data.payableAmount) {
+      alert("Slot is already free");
+      return;
+    }
     setPayableAmount(data.payableAmount);
     setShowModal(true);
   };
 
-  const handlePayWithRazorpay = async() => {
+  const handlePayWithRazorpay = async () => {
     setShowModal(false);
     await handleProceed(payableAmount);
   };
@@ -100,38 +97,72 @@ const SlotExit = () => {
   };
 
   return (
-    <div className="h-[400px] w-[400px] m-auto mt-[200px]">
-      <Scanner
-        components={{
-          audio: false,
-        }}
-        options={{
-          delayBetweenScanSuccess: 10000,
-        }}
-        onResult={(text) => qrData(text)}
-        onError={(error) => console.log(error?.message)}
-      />
-      <Modal open={showModal} onClose={() => setShowModal(false)}>
-        <div className="modal-container bg-white fixed z-[1300]  flex items-center justify-center">
-          <div className="modal-content flex flex-col justify-center items-center gap-5 p-6 ">
-            <h2>
-              Payable Amount: {payableAmount} Rs. ({payableAmount * 0.011}{" "}
-              MATIC)
-            </h2>
+    <div className="min-h-screen bg-gray-100 flex flex-col items-center justify-center p-4">
+      <div className="bg-white rounded-lg shadow-lg p-8 max-w-md w-full">
+        <h1 className="text-3xl font-bold text-center text-gray-800 mb-6">
+          Slot Exit
+        </h1>
+        <p className="text-center text-gray-600 mb-8">
+          Please scan the QR code to exit the parking slot.
+        </p>
+        <div className="bg-gray-200 rounded-lg p-4 mb-8">
+          <Scanner
+            components={{
+              audio: false,
+            }}
+            options={{
+              delayBetweenScanSuccess: 10000,
+            }}
+            onResult={(text) => qrData(text)}
+            onError={(error) => console.log(error?.message)}
+            className="w-full h-64 rounded-lg overflow-hidden"
+          />
+        </div>
+        <p className="text-center text-gray-600">
+          Position the QR code within the frame to scan.
+        </p>
+      </div>
+
+      <Modal
+        open={showModal}
+        onClose={() => setShowModal(false)}
+        aria-labelledby="payment-modal-title"
+        aria-describedby="payment-modal-description"
+      >
+        <Box sx={{
+          position: 'absolute',
+          top: '50%',
+          left: '50%',
+          transform: 'translate(-50%, -50%)',
+          width: 400,
+          bgcolor: 'background.paper',
+          boxShadow: 24,
+          p: 4,
+          borderRadius: 2,
+        }}>
+          <Typography id="payment-modal-title" variant="h6" component="h2" gutterBottom>
+            Payment Details
+          </Typography>
+          <Typography id="payment-modal-description" sx={{ mt: 2, mb: 4 }}>
+            Payable Amount: {payableAmount} Rs. ({(payableAmount * 0.011).toFixed(4)} MATIC)
+          </Typography>
+          <Box sx={{ display: 'flex', justifyContent: 'space-between', mt: 3 }}>
             <Button
               onClick={handlePayWithRazorpay}
-              style={{ backgroundColor: "green", color: "white" }}
+              variant="contained"
+              sx={{ bgcolor: 'green', color: 'white', '&:hover': { bgcolor: 'darkgreen' } }}
             >
               Pay with Razorpay
             </Button>
             <Button
               onClick={handlePayWithWallet}
-              style={{ backgroundColor: "red", color: "white" }}
+              variant="contained"
+              sx={{ bgcolor: 'red', color: 'white', '&:hover': { bgcolor: 'darkred' } }}
             >
               Pay with Wallet
             </Button>
-          </div>
-        </div>
+          </Box>
+        </Box>
       </Modal>
     </div>
   );
