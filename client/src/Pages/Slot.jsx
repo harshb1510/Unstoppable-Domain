@@ -24,7 +24,7 @@ const Slot = () => {
     try {
       const [realTimeResponse, dbResponse] = await Promise.all([
         axios.get("http://127.0.0.1:8000/check_parking"),
-        axios.get("http://localhost:8080/parking/allSlot"),
+        axios.get("https://unstoppable-domain.onrender.com/parking/allSlot"),
       ]);
 
       const realTimeData = realTimeResponse.data;

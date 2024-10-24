@@ -21,7 +21,7 @@ export default function Login() {
     e.preventDefault();
     const { userName, password } = formData;
     try {
-      const res = await fetch("http://localhost:8080/users/login", {
+      const res = await fetch("https://unstoppable-domain.onrender.com/users/login", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

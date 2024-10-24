@@ -11,7 +11,7 @@ const MyBooking = () => {
       const user = JSON.parse(localStorage.getItem("user"));
       if (user) {
         const response = await fetch(
-          "http://localhost:8080/listings/getMyBooking",
+          "https://unstoppable-domain.onrender.com/listings/getMyBooking",
           {
             method: "GET",
             headers: {

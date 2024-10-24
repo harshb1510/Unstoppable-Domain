@@ -10,7 +10,11 @@ const NFT = require("./models/nftModel.js");
 const app = express();
 app.use(express.json());
 app.use(
-  cors("*")
+  cors({
+    origin: "https://unstoppable-domain.onrender.com",
+    methods: ["GET", "POST", "PUT", "DELETE"],
+    allowedHeaders: ["Content-Type", "x-auth-token"],
+  })
 );
 
 const upload = multer({

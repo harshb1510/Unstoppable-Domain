@@ -10,7 +10,7 @@ const Admin = () => {
   useEffect(() => {
     const fetchSlots = async () => {
       try {
-        const response = await axios.get('http://localhost:8080/parking/allSlot')
+        const response = await axios.get('https://unstoppable-domain.onrender.com/parking/allSlot')
         setSlots(response.data)
 
         // Calculate total earnings
