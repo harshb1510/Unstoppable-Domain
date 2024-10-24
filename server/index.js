@@ -10,10 +10,7 @@ const NFT = require("./models/nftModel.js");
 const app = express();
 app.use(express.json());
 app.use(
-  cors({
-    origin: "https://parkndgo.netlify.app",
-    credentials: true,
-  })
+  cors("*")
 );
 
 const upload = multer({
@@ -103,7 +100,7 @@ const PORT = process.env.PORT || 8000;
 dbConnect();
 
 app.get("/", async (req, res) => {
-  res.redirect("https://parkndgo.netlify.app");
+  res.send("Hello")
 });
 
 app.use("/users", userRoutes);

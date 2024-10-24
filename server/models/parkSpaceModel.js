@@ -19,6 +19,10 @@ const parkSpaceSchema = new mongoose.Schema({
   slotNo: {
     type: Number,
   },
+  amount: { // New field to store the payable amount
+    type: Number,
+    default: 0,
+  },
 });
 
 module.exports = new mongoose.model("parkSpace", parkSpaceSchema);
