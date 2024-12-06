@@ -50,7 +50,7 @@ export default function BookingModal({
 
   const handlePayment = async () => {
     const cryptoAmount = rentPrice * 0.011;
-    const user = await fetch("https://unstoppable-domain.onrender.com/users/getUser", {
+    const user = await fetch("http://localhost:8080/users/getUser", {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
@@ -62,7 +62,7 @@ export default function BookingModal({
     await makeCryptoPayment(cryptoAddress, totalPayable * 0.011);
 
     const saveWallet = await axios.post(
-      "https://unstoppable-domain.onrender.com/listings/bookings/saveWallet",
+      "http://localhost:8080/listings/bookings/saveWallet",
       {
         id,
         carOwnerId,
@@ -81,7 +81,7 @@ export default function BookingModal({
       order_id: data.orderDetails.razorpayOrderId,
       handler: async (response) => {
         try {
-          const verifyUrl = `https://unstoppable-domain.onrender.com/listings/verify`;
+          const verifyUrl = `http://localhost:8080/listings/verify`;
 
           const verifyData = {
             razorpay_order_id: response.razorpay_order_id,
@@ -91,7 +91,7 @@ export default function BookingModal({
           await axios.post(verifyUrl, verifyData);
           console.log(id, carOwnerId);
           const save = await axios.post(
-            "https://unstoppable-domain.onrender.com/listings/bookings/saveBooking",
+            "http://localhost:8080/listings/bookings/saveBooking",
             {
               id,
               carOwnerId,
@@ -102,7 +102,7 @@ export default function BookingModal({
           );
           console.log(save);
           toast.success("Payment Successful");
-          history("/claimNft");
+          history("/myBooking");
         } catch (err) {
           console.log(err);
           toast.error("Payment Failed");
@@ -145,7 +145,7 @@ export default function BookingModal({
     try {
       console.log(id, carOwnerId);
       const response = await axios.post(
-        "https://unstoppable-domain.onrender.com/listings/bookings/addBooking",
+        "http://localhost:8080/listings/bookings/addBooking",
         {
           hours,
           rentPrice: totalPayable,

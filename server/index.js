@@ -10,11 +10,7 @@ const NFT = require("./models/nftModel.js");
 const app = express();
 app.use(express.json());
 app.use(
-  cors({
-    origin: ["http://localhost:5173", "https://unstoppable-domain.vercel.app"],
-    methods: ["GET", "POST", "PUT", "DELETE"],
-    allowedHeaders: ["Content-Type", "x-auth-token"],
-  })
+  cors("*")
 );
 
 const upload = multer({

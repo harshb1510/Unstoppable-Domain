@@ -41,7 +41,7 @@ export default function RentalCard() {
 
 const CardItem = ({ image, title, description, linkTo, linkText }) => (
   <motion.div 
-    className="w-full max-w-sm bg-white rounded-lg shadow-lg overflow-hidden"
+    className="w-full max-w-sm bg-white  shadow-lg overflow-hidden"
     initial={{ opacity: 0, scale: 0.9 }}
     animate={{ opacity: 1, scale: 1 }}
     transition={{ duration: 0.5 }}

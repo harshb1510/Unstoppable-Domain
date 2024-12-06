@@ -63,7 +63,7 @@ export default function RentForm() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const res = await fetch("https://unstoppable-domain.onrender.com/listings/listNewCar", {
+    const res = await fetch("http://localhost:8080/listings/listNewCar", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

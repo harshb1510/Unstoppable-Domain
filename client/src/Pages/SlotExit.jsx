@@ -29,7 +29,7 @@ const SlotExit = () => {
       order_id: data.orderDetails.razorpayOrderId,
       handler: async (response) => {
         try {
-          const verifyUrl = `https://unstoppable-domain.onrender.com/listings/verify`;
+          const verifyUrl = `http://localhost:8080/listings/verify`;
           const verifyData = {
             razorpay_order_id: response.razorpay_order_id,
             razorpay_payment_id: response.razorpay_payment_id,
@@ -52,7 +52,7 @@ const SlotExit = () => {
   const handleProceed = async (data) => {
     try {
       const response = await axios.post(
-        "https://unstoppable-domain.onrender.com/listings/bookings/addBooking",
+        "http://localhost:8080/listings/bookings/addBooking",
         {
           rentPrice: data,
         }
@@ -65,7 +65,7 @@ const SlotExit = () => {
 
   const qrData = async (text) => {
     const slotBooking = JSON.parse(text);
-    const slotExit = await fetch("https://unstoppable-domain.onrender.com/parking/slotExit", {
+    const slotExit = await fetch("http://localhost:8080/parking/slotExit", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

@@ -3,7 +3,7 @@ import { FaSearchLocation, FaCalendarAlt, FaCar } from "react-icons/fa";
 
 const Working = () => {
   return (
-    <div className="container mx-auto px-4 py-8 shadow-xl">
+    <div className="container mx-auto px-4 py-8 shadow-xl mb-8">
       <div className="flex justify-between flex-col items-center mb-8 gap-4">
         <h1 className="text-3xl font-bold text-gray-800 leading-snug">
           How Park&Go Car Rental Works

@@ -24,7 +24,7 @@ const Slot = () => {
     try {
       const [realTimeResponse, dbResponse] = await Promise.all([
         axios.get("http://127.0.0.1:8000/check_parking"),
-        axios.get("https://unstoppable-domain.onrender.com/parking/allSlot"),
+        axios.get("http://localhost:8080/parking/allSlot"),
       ]);
 
       const realTimeData = realTimeResponse.data;
@@ -64,7 +64,8 @@ const Slot = () => {
     const eventSource = new EventSource("http://127.0.0.1:8000/sse_parking_status");
     eventSource.onmessage = (event) => {
       const parkingData = JSON.parse(event.data);
-      fetchSlotsData(); // Refresh data on SSE update
+      console.log("Received SSE update:", parkingData);
+      updateSlotsFromSSE(parkingData);
     };
 
     eventSource.onerror = (error) => {
@@ -73,6 +74,21 @@ const Slot = () => {
     };
 
     return eventSource;
+  };
+
+  const updateSlotsFromSSE = (parkingData) => {
+    setSlots(prevSlots => {
+      const updatedSlots = prevSlots.map(slot => {
+        const newStatus = parkingData.space_status[slot.slotNo.toString()];
+        return {
+          ...slot,
+          isFree: newStatus.status === "Empty"
+        };
+      });
+      const freeSlots = updatedSlots.filter(slot => slot.isFree).length;
+      setFreeSlot(freeSlots);
+      return updatedSlots;
+    });
   };
 
   const handleSlotBook = (slotNo) => {
@@ -100,6 +116,12 @@ const Slot = () => {
 
     setBookingData(tempBookingData);
     setIsModalOpen(false);
+
+    // Update the local state to reflect the booking
+    setSlots(prevSlots => prevSlots.map(slot => 
+      slot.slotNo === selectedSlot.slotNo ? { ...slot, isFree: false } : slot
+    ));
+    setFreeSlot(prevFreeSlot => prevFreeSlot - 1);
   };
 
   const cancelSlotBooking = () => {

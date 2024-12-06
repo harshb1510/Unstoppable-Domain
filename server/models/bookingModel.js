@@ -12,6 +12,12 @@ const bookingSchema = new mongoose.Schema({
     timeLeft: {
         type: Number,
     },
+    carOwnerId: {
+        type: String,
+    },
+    rentPrice: {
+        type: Number,
+    },
 });
 
 module.exports = new mongoose.model("bookingDatas", bookingSchema);

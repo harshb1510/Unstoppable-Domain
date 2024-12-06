@@ -19,7 +19,7 @@ const parkSpaceSchema = new mongoose.Schema({
   slotNo: {
     type: Number,
   },
-  amount: { // New field to store the payable amount
+  amount: { 
     type: Number,
     default: 0,
   },

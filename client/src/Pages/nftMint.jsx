@@ -12,7 +12,7 @@ const NftMint = () => {
                 const formData = new FormData();
                 formData.append("file", file);
 
-                const response = await fetch('https://unstoppable-domain.onrender.com/upload', {
+                const response = await fetch('http://localhost:8080/upload', {
                     method: 'POST',
                     body: formData
                 });

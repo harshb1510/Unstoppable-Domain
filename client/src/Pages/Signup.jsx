@@ -1,7 +1,7 @@
-import { Link } from "react-router-dom";
 import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
+
 export default function Signup() {
   const [formData, setFormData] = useState({
     userName: "",
@@ -22,128 +22,112 @@ export default function Signup() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     const { userName, fullName, email, password } = formData;
-    const res = await fetch("https://unstoppable-domain.onrender.com/users/register", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ userName, fullName, email, password }),
-    });
-    const data = await res.json();
-    if (data.error) {
-      console.log(data.error);
-      toast.error(data.error)
-      navigate('/signup')
-    } else {
-      console.log(data);
-      toast.success("Signup Successfully");
+    try {
+      const res = await fetch("http://localhost:8080/users/register", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ userName, fullName, email, password }),
+      });
+      const data = await res.json();
+      if (data.error) {
+        toast.error(data.error);
+      } else {
+        toast.success("Signup Successful");
         navigate("/login");
-
+      }
+    } catch (error) {
+      toast.error("An error occurred. Please try again.");
     }
   };
 
   return (
-    <div>
-      <section class="bg-3f757e ">
-        <div class="flex flex-col items-center justify-center px-6 py-8 mx-auto md:h-screen lg:py-0">
-          <div class="w-full bg-white  border rounded-lg shadow-lg dark:border md:mt-0 sm:max-w-md xl:p-0 dark:bg-gray-800 dark:border-gray-700">
-            <div class="p-6 space-y-4 md:space-y-6 sm:p-8">
-              <h1 class=" flex justify-center text-xl font-bold leading-tight tracking-tight text-gray-900 md:text-2xl dark:text-white">
-                Create your account
-              </h1>
-              <form class="space-y-4 md:space-y-6" action="#">
-                <div>
-                  <label
-                    for="username"
-                    class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-                  >
-                    Username
-                  </label>
-                  <input
-                    type="username"
-                    placeholder="Username"
-                    class="bg-white border border-gray-800 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                    required=""
-                    value={formData.userName}
-                    name="userName"
-                    onChange={handleChange}
-                  />
-                </div>
-                <div>
-                  <label
-                    for="name"
-                    class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-                  >
-                Full Name
-                  </label>
-                  <input
-                    type="name"
-                    placeholder="Full Name"
-                    class="bg-white border border-gray-800 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 "
-                    required=""
-                    value={formData.fullName}
-                    name="fullName"
-                    onChange={handleChange}
-                  />
-                </div>
-                <div>
-                  <label
-                    for="email"
-                    class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-                  >
-                    Email
-                  </label>
-                  <input
-                    type="email"
-                    id="email"
-                    class="bg-white border border-gray-800 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 "
-                    placeholder="Email"
-                    required=""
-                    value={formData.email}
-                    name="email"
-                    onChange={handleChange}
-                  />
-                </div>
-                <div>
-                  <label
-                    for="password"
-                    class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-                  >
-                    Password
-                  </label>
-                  <input
-                    type="password"
-                    id="password"
-                    placeholder="••••••••"
-                    class="bg-white border border-gray-800 text-gray-900 sm:text-sm rounded-lg  block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 "
-                    required=""
-                    value={formData.password}
-                    name="password"
-                    onChange={handleChange}
-                  />
-                </div>
-                <div class="flex items-start"></div>
-                <button
-                  type="submit"
-                  onClick={handleSubmit}
-                  class="w-full bg-cyan-500 hover:bg-cyan-600 text-white bg-primary-600 hover:bg-primary-700 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800"
-                >
-                  Signup
-                </button>
-                <p class="text-sm font-light flex justify-center text-gray-500 dark:text-gray-400">
-                  Already have an account?{" "}
-                  <Link 
-                    to='/login'
-                    class=" ml-2 font-medium text-cyan-500 hover:text-cyan-600 hover:underline dark:text-primary-500"
-                  >
-                    Login here
-                  </Link>
-                </p>
-              </form>
-            </div>
+    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-green-50 to-green-100 relative overflow-hidden">
+      {/* Animated background shapes */}
+      <div className="absolute inset-0 z-0">
+        <div className="absolute w-96 h-96 bg-green-200 rounded-full mix-blend-multiply filter blur-xl opacity-70 animate-blob top-0 left-0"></div>
+        <div className="absolute w-96 h-96 bg-green-300 rounded-full mix-blend-multiply filter blur-xl opacity-70 animate-blob animation-delay-2000 bottom-0 right-0"></div>
+        <div className="absolute w-96 h-96 bg-green-400 rounded-full mix-blend-multiply filter blur-xl opacity-70 animate-blob animation-delay-4000 top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2"></div>
+      </div>
+
+      <div className="bg-white p-8 rounded-2xl shadow-lg relative z-10 w-full max-w-md">
+        <h1 className="text-4xl font-bold text-center text-green-700 mb-8">Create Account</h1>
+        <form onSubmit={handleSubmit} className="space-y-4">
+          <div>
+            <label htmlFor="username" className="block text-sm font-medium text-green-700">
+              Username
+            </label>
+            <input
+              type="text"
+              name="userName"
+              id="username"
+              className="mt-1 block w-full px-3 py-2 bg-green-50 border border-green-300 rounded-md text-green-900 placeholder-green-400 focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-green-500"
+              placeholder="Enter your username"
+              required
+              value={formData.userName}
+              onChange={handleChange}
+            />
           </div>
-        </div>
-      </section>
+          <div>
+            <label htmlFor="fullName" className="block text-sm font-medium text-green-700">
+              Full Name
+            </label>
+            <input
+              type="text"
+              name="fullName"
+              id="fullName"
+              className="mt-1 block w-full px-3 py-2 bg-green-50 border border-green-300 rounded-md text-green-900 placeholder-green-400 focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-green-500"
+              placeholder="Enter your full name"
+              required
+              value={formData.fullName}
+              onChange={handleChange}
+            />
+          </div>
+          <div>
+            <label htmlFor="email" className="block text-sm font-medium text-green-700">
+              Email
+            </label>
+            <input
+              type="email"
+              name="email"
+              id="email"
+              className="mt-1 block w-full px-3 py-2 bg-green-50 border border-green-300 rounded-md text-green-900 placeholder-green-400 focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-green-500"
+              placeholder="Enter your email"
+              required
+              value={formData.email}
+              onChange={handleChange}
+            />
+          </div>
+          <div>
+            <label htmlFor="password" className="block text-sm font-medium text-green-700">
+              Password
+            </label>
+            <input
+              type="password"
+              name="password"
+              id="password"
+              className="mt-1 block w-full px-3 py-2 bg-green-50 border border-green-300 rounded-md text-green-900 placeholder-green-400 focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-green-500"
+              placeholder="Enter your password"
+              required
+              value={formData.password}
+              onChange={handleChange}
+            />
+          </div>
+          <button
+            type="submit"
+            className="w-full px-4 py-2 text-white font-semibold bg-green-600 rounded-md hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2 focus:ring-offset-green-100 transition duration-300"
+          >
+            Sign Up
+          </button>
+        </form>
+        <p className="mt-4 text-center text-green-700">
+          Already have an account?{" "}
+          <Link to="/login" className="font-medium text-green-600 hover:text-green-500">
+            Login here
+          </Link>
+        </p>
+      </div>
     </div>
   );
 }

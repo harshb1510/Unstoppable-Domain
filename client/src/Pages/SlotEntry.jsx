@@ -17,7 +17,7 @@ const SlotEntry = () => {
 
   const add = async () => {
     try {
-      const response = await fetch("https://unstoppable-domain.onrender.com/parking/addSlot", {
+      const response = await fetch("http://localhost:8080/parking/addSlot", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -35,7 +35,7 @@ const SlotEntry = () => {
 
     setScanned(true);
     const slotBooking = JSON.parse(text);
-    const slotEntry = await fetch("https://unstoppable-domain.onrender.com/parking/slotEntry", {
+    const slotEntry = await fetch("http://localhost:8080/parking/slotEntry", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

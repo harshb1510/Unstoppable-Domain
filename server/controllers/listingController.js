@@ -102,6 +102,8 @@ const saveBooking = async (req, res) => {
     carName: booking.carName,
     carImage: booking.image1,
     timeLeft: time,
+    carOwnerId: carOwnerId,
+    rentPrice: rentPrice,
   });
 
   await user.save();

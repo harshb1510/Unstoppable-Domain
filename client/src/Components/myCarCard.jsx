@@ -13,7 +13,7 @@ const Card = ({ id, carName, ownerName, kms, image1, image2, available, availabl
 
   const handleClick = async (id) => {
     try {
-      const res = await axios.post("https://unstoppable-domain.onrender.com/listings/removeCar", 
+      const res = await axios.post("http://localhost:8080/listings/removeCar", 
         { id: id },
         {
           headers: {

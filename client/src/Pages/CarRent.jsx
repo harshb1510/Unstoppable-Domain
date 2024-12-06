@@ -14,7 +14,7 @@ const CarRent = () => {
 
   const getCars = async () => {
     try {
-      const res = await fetch("https://unstoppable-domain.onrender.com/listings/getAllCar");
+      const res = await fetch("http://localhost:8080/listings/getAllCar");
       const data = await res.json();
       setCars(data);
       setLoading(false);
