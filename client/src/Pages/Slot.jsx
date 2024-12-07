@@ -13,10 +13,16 @@ const Slot = () => {
   const [freeSlot, setFreeSlot] = useState(0);
 
   useEffect(() => {
-    fetchSlotsData();
-    const eventSource = setupSSE();
+    fetchSlotsData(); // Initial fetch
+    const fetchInterval = setInterval(() => {
+      fetchSlotsData(); // Poll every 5 seconds
+    }, 5000);
+
+    const eventSource = setupSSE(); // Setup SSE for real-time updates
+
     return () => {
-      eventSource.close();
+      clearInterval(fetchInterval); // Cleanup polling
+      eventSource.close(); // Cleanup SSE
     };
   }, []);
 
@@ -82,7 +88,7 @@ const Slot = () => {
         const newStatus = parkingData.space_status[slot.slotNo.toString()];
         return {
           ...slot,
-          isFree: newStatus.status === "Empty"
+          isFree: newStatus && newStatus.status === "Empty"
         };
       });
       const freeSlots = updatedSlots.filter(slot => slot.isFree).length;
