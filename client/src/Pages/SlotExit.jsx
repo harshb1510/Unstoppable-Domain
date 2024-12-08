@@ -144,7 +144,7 @@ const SlotExit = () => {
             Payment Details
           </Typography>
           <Typography id="payment-modal-description" sx={{ mt: 2, mb: 4 }}>
-            Payable Amount: {payableAmount} Rs. ({(payableAmount * 0.011).toFixed(4)} MATIC)
+            Payable Amount: {payableAmount.toFixed(2)} Rs.
           </Typography>
           <Box sx={{ display: 'flex', justifyContent: 'space-between', mt: 3 }}>
             <Button
@@ -154,13 +154,13 @@ const SlotExit = () => {
             >
               Pay with Razorpay
             </Button>
-            <Button
+            {/* <Button
               onClick={handlePayWithWallet}
               variant="contained"
               sx={{ bgcolor: 'red', color: 'white', '&:hover': { bgcolor: 'darkred' } }}
             >
               Pay with Wallet
-            </Button>
+            </Button> */}
           </Box>
         </Box>
       </Modal>

@@ -47,7 +47,7 @@ const slotEntry = async (req, res) => {
       slot.occupied = true;
       slot.inTime = Date.now();
       slot.carOwner = req.body.carOwner; 
-
+      slot.outTime = "";
       await slot.save(); 
 
       return res.status(200).json({
@@ -74,8 +74,8 @@ const slotExit = async (req, res) => {
       slot.outTime = outTime.toString(); // Store outTime as a string if needed
       const totalTime = outTime - inTime;
       console.log(totalTime);
-      const minutes = Math.floor((totalTime % 3600000) / 60000);
-      const payableAmount = minutes * 2; // Calculate the payable amount
+      const minutes = Math.floor((totalTime % 3600000 / 1000));
+      const payableAmount = minutes * 0.1; // Calculate the payable amount
       slot.amount = payableAmount; // Save the payable amount in the database
       await slot.save(); // Await the save operation
       console.log("Slot exit processed");

@@ -28,9 +28,11 @@ export default function Login() {
         },
         body: JSON.stringify({ userName, password }),
       });
+      console.log(res);
       const data = await res.json();
-      if (data.error) {
-        toast.error(data.error);
+      console.log(data);
+      if (res.status === 401) {
+        toast.error("Invalid Credentials");
       } else {
         localStorage.setItem("token", data.token);
         localStorage.setItem("user", JSON.stringify(data.user));

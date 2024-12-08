@@ -16,7 +16,7 @@ const Slot = () => {
     fetchSlotsData(); // Initial fetch
     const fetchInterval = setInterval(() => {
       fetchSlotsData(); // Poll every 5 seconds
-    }, 5000);
+    }, 500);
 
     const eventSource = setupSSE(); // Setup SSE for real-time updates
 

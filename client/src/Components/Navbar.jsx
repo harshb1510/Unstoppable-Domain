@@ -26,18 +26,18 @@ export default function Navbar() {
             <img src={logo} className="h-15 w-[300px]" alt="Park&Go Logo" />
           </Link>
           <div className="flex items-center space-x-6 rtl:space-x-reverse">
-            <Link
+            {/* <Link
               to="/parking"
               className="text-[20px] cursor-pointer hover:underline font-bold"
             >
               Parking
-            </Link>
-            <Link
+            </Link> */}
+            {/* <Link
               to="/rental"
               className="text-[20px] cursor-pointer hover:underline font-bold"
             >
               Rental
-            </Link>
+            </Link> */}
 
             {isLoggedIn ? (
               <>

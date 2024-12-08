@@ -49,7 +49,7 @@ const Admin = () => {
             <thead>
               <tr>
                 <th className="py-3 px-4 bg-gray-200 text-left">Slot No</th>
-                <th className="py-3 px-4 bg-gray-200 text-left">Occupied</th>
+                {/* <th className="py-3 px-4 bg-gray-200 text-left">Occupied</th> */}
                 <th className="py-3 px-4 bg-gray-200 text-left">In Time</th>
                 <th className="py-3 px-4 bg-gray-200 text-left">Out Time</th>
               </tr>
@@ -58,15 +58,15 @@ const Admin = () => {
               {slots.map((slot) => (
                 <tr key={slot._id} className="border-b hover:bg-gray-100">
                   <td className="py-3 px-4">{slot.slotNo}</td>
-                  <td className="py-3 px-4">{slot.occupied ? 'Yes' : 'No'}</td>
+                  {/* <td className="py-3 px-4">{slot.occupied ? 'Yes' : 'No'}</td> */}
                   <td className="py-3 px-4">{new Date(parseInt(slot.inTime)).toLocaleString()}</td>
-                  <td className="py-3 px-4">{slot.outTime ? new Date(parseInt(slot.outTime)).toLocaleString() : 'N/A'}</td>
+                  <td className="py-3 px-4">{slot.outTime ? new Date(parseInt(slot.outTime)).toLocaleString() : ''}</td>
                 </tr>
               ))}
             </tbody>
           </table>
           <div className="p-4 text-xl font-bold text-gray-800">
-            Total Earnings: ₹{totalEarnings}
+            {/* Total Earnings: ₹{totalEarnings} */}
           </div>
         </div>
       </div>
